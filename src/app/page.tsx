@@ -8,6 +8,7 @@ import { Section } from '@/components/Section';
 import { BookOpen, Award, Users, ShieldCheck, ChevronRight, Stethoscope, Microscope, Activity, Heart, Building2 } from 'lucide-react';
 import React from 'react';
 import { Counter } from '@/components/Counter';
+import { AffiliationTicker } from '@/components/AffiliationTicker';
 
 const programs = [
   {
@@ -74,6 +75,8 @@ export default function Home() {
           </Link>
         </div>
       </Hero>
+
+      <AffiliationTicker />
 
       {/* Programs Overview */}
       <Section
