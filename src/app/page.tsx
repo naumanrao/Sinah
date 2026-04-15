@@ -57,7 +57,7 @@ export default function Home() {
       <Hero
         title="Empowering the Next Generation of Healthcare Leaders"
         subtitle="Join SINAH Institute of Nursing & Allied Health Sciences and embark on a rewarding career in the medical field with world-class education and training."
-        image="/images/hero.png"
+        image="/images/students.png"
         height="large"
       >
         <div className="flex flex-col sm:flex-row gap-4">
@@ -231,7 +231,7 @@ export default function Home() {
           >
             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl group">
               <Image
-                src="/images/siddique-hospital.png"
+                src="/images/hospital.webp"
                 alt="Siddique Hospital Exterior"
                 fill
                 className="object-cover blur-[2px] transition-all duration-700 group-hover:blur-0 group-hover:scale-105"
@@ -343,7 +343,7 @@ export default function Home() {
               className="w-full h-[400px] bg-white/10 backdrop-blur-md rounded-[2.5rem] border border-white/20 overflow-hidden shadow-2xl"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3446.767216105776!2d71.48686597436544!3d30.243714109104076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b359162c9378b%3A0xd60a344e2cb018b1!2sSiddique%20Institute%20of%20Nursing%20and%20Allied%20health%20sciences%20Multan!5e0!3m2!1sen!2s!4v1706692224677!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.1598002318633!2d71.18605457506193!3d30.060953617789252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393ad993c5477b01%3A0xe7cc129333aa1daf!2sSiddique%20institute%20of%20Nursing%20and%20Allied%20Health%20Science%20Muzaffargarh!5e0!3m2!1sen!2s!4v1773504184487!5m2!1sen!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

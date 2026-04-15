@@ -29,24 +29,25 @@ const nursingPrograms = [
         eligibility: 'Metric (Science) with 45% marks',
         scope: 'Community health service and primary care for rural healthcare.',
         image: '/images/allied-health.png',
+    },
+    {
+        name: 'Community Midwifery (CMW)',
+        duration: '2 Years',
+        eligibility: 'Metric with 45% marks',
+        scope: 'Prepares individuals to provide essential maternal and neonatal care.',
+        image: '/images/cmw.jpg',
     }
 ];
 
 const alliedHealth = [
     {
-        name: 'Medical Lab Technology',
-        duration: '2-4 Years',
-        eligibility: 'Intermediate (Pre-Medical)',
+        name: 'Pharmacy Technician',
+        duration: '2 Years',
+        eligibility: 'Matric (Science)',
         scope: 'Diagnostic laboratories, forensic labs, and medical research.',
         image: '/images/allied-health.png'
     },
-    {
-        name: 'Operation Theater Tech',
-        duration: '2 Years',
-        eligibility: 'Intermediate (Pre-Medical)',
-        scope: 'Surgical assistance and theater management in hospitals.',
-        image: '/images/hero.png'
-    }
+
 ];
 
 export default function Programs() {

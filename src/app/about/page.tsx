@@ -70,7 +70,7 @@ export default function About() {
                         {/* Decorative Overlay */}
                         <div className="absolute -bottom-6 -left-6 bg-medical-gradient p-8 rounded-2xl shadow-xl hidden md:block">
                             <div className="text-white">
-                                <p className="text-4xl font-bold">10+</p>
+                                <p className="text-4xl font-bold">05+</p>
                                 <p className="text-sm">Years of Excellence</p>
                             </div>
                         </div>
@@ -106,20 +106,20 @@ export default function About() {
 
             {/* Leadership Message */}
             <Section
-                title="Principal's Message"
+                title="Chairman's Message"
                 subtitle="Words from Leadership"
             >
                 <div className="bg-slate-50 p-8 md:p-16 rounded-[3rem] border border-slate-200/50 flex flex-col md:flex-row gap-12 items-center">
                     <div className="w-48 h-48 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-xl">
-                        <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl font-bold">PR</div>
+                        <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl font-bold">CP</div>
                     </div>
                     <div className="space-y-6">
                         <p className="text-xl italic text-primary leading-relaxed">
                             "At SINAH, we don't just teach nursing; we cultivate leaders who will shape the future of healthcare. Our commitment to excellence is reflected in the success of our graduates who are making a difference in the lives of patients every day."
                         </p>
                         <div>
-                            <h5 className="text-2xl font-bold text-primary">Dr. Sarah Ahmed</h5>
-                            <p className="text-secondary font-bold uppercase tracking-wider text-sm">Principal, SINAH Institute</p>
+                            <h5 className="text-2xl font-bold text-primary">Rana Dilshad Ali</h5>
+                            <p className="text-secondary font-bold uppercase tracking-wider text-sm">Chairman, SINAH Institute</p>
                         </div>
                     </div>
                 </div>

@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { Hero } from '@/components/Hero';
 import { Section } from '@/components/Section';
 import { Phone, Mail, MapPin, Send, MessageSquare, Clock } from 'lucide-react';
+import { useCity } from '@/context/CityContext';
 
 export default function Contact() {
     const [formState, setFormState] = useState({ name: '', email: '', program: '', message: '' });
     const [submitted, setSubmitted] = useState(false);
+    const { selectedCity } = useCity();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,7 +47,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <p className="font-bold text-primary">Phone</p>
-                                            <p className="text-muted-foreground">+92 300 8038076</p>
+                                            <p className="text-muted-foreground">{selectedCity.phone}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
@@ -54,7 +56,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <p className="font-bold text-primary">Email</p>
-                                            <p className="text-muted-foreground">admissions@SINAH.edu.pk</p>
+                                            <p className="text-muted-foreground">{selectedCity.email}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +68,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <p className="font-bold text-primary">Address</p>
-                                            <p className="text-muted-foreground">45 Alama Iqbal St Backside Mall of Multan, Bosan Road, Multan</p>
+                                            <p className="text-muted-foreground">{selectedCity.address}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
@@ -82,24 +84,24 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        {/* Google Map */}
-                        <div className="w-full h-80 bg-slate-100 rounded-[2rem] border border-slate-200 overflow-hidden relative shadow-inner">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3446.767216105776!2d71.48686597436544!3d30.243714109104076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b359162c9378b%3A0xd60a344e2cb018b1!2sSiddique%20Institute%20of%20Nursing%20and%20Allied%20health%20sciences%20Multan!5e0!3m2!1sen!2s!4v1706692224677!5m2!1sen!2s"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title="Siddique Institute of Nursing Location"
-                                className="grayscale hover:grayscale-0 transition-all duration-700"
-                            ></iframe>
-                        </div>
-                    </div>
 
+                    </div>
+                    {/* Google Map */}
+                    <div className="w-full h-80 bg-slate-100 rounded-[2rem] border border-slate-200 overflow-hidden relative shadow-inner">
+                        <iframe
+                            src={selectedCity.mapUrl}
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title={`${selectedCity.name} Campus Location`}
+                            className="grayscale hover:grayscale-0 transition-all duration-700"
+                        ></iframe>
+                    </div>
                     {/* Contact Form */}
-                    <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100 relative">
+                    {/* <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100 relative">
                         {submitted ? (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
@@ -187,7 +189,7 @@ export default function Contact() {
                                 </button>
                             </form>
                         )}
-                    </div>
+                    </div> */}
                 </div>
             </Section>
         </div>

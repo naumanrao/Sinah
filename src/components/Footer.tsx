@@ -1,8 +1,15 @@
+
+
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { Landmark, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Landmark, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Globe } from 'lucide-react';
+import { useCity } from '@/context/CityContext';
 
 export function Footer() {
+    const { selectedCity, openModal } = useCity();
+
     return (
         <footer className="bg-primary text-white pt-16 pb-8">
             <div className="container mx-auto px-4">
@@ -18,12 +25,12 @@ export function Footer() {
                         <p className="text-white/70 text-sm leading-relaxed">
                             Excellence in Nursing & Allied Health Sciences. Empowering the next generation of healthcare professionals with quality education and clinical training.
                         </p>
-                        <div className="flex space-x-4">
+                        {/* <div className="flex space-x-4">
                             <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors"><Facebook size={18} /></a>
                             <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors"><Twitter size={18} /></a>
                             <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors"><Instagram size={18} /></a>
                             <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-secondary transition-colors"><Linkedin size={18} /></a>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Quick Links */}
@@ -44,7 +51,7 @@ export function Footer() {
                             <li><Link href="/programs" className="hover:text-secondary transition-colors">Nursing (BSN)</Link></li>
                             <li><Link href="/programs" className="hover:text-secondary transition-colors">Post RN BSN</Link></li>
                             <li><Link href="/programs" className="hover:text-secondary transition-colors">Lady Health Visitor</Link></li>
-                            <li><Link href="/programs" className="hover:text-secondary transition-colors">Medical Lab Tech</Link></li>
+                            <li><Link href="/programs" className="hover:text-secondary transition-colors">Community Midwifery (CMW)</Link></li>
                         </ul>
                     </div>
 
@@ -54,16 +61,26 @@ export function Footer() {
                         <ul className="space-y-4 text-sm text-white/70">
                             <li className="flex items-start space-x-3">
                                 <MapPin size={18} className="text-secondary shrink-0" />
-                                <span>45 Alama Iqbal St Backside Mall of Multan, Bosan Road, Multan</span>
+                                <span>{selectedCity.address}</span>
                             </li>
                             <li className="flex items-center space-x-3">
                                 <Phone size={18} className="text-secondary shrink-0" />
-                                <span>+92 300 8038076</span>
+                                <span>{selectedCity.phone}</span>
                             </li>
                             <li className="flex items-center space-x-3">
                                 <Mail size={18} className="text-secondary shrink-0" />
-                                <span>info@SINAH.edu.pk</span>
+                                <span>{selectedCity.email}</span>
                             </li>
+                            {/* <li className="pt-2">
+                                <button
+                                    onClick={openModal}
+                                    className="flex items-center space-x-2 text-secondary hover:text-white transition-colors text-sm font-semibold border border-secondary/30 rounded-full px-4 py-2 hover:bg-secondary/10"
+                                >
+                                    <Globe size={16} />
+                                    <span>Change Location ({selectedCity.name})</span>
+                                </button>
+                            </li> */}
+
                         </ul>
                     </div>
                 </div>

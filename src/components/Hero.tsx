@@ -28,7 +28,7 @@ export function Hero({ title, subtitle, image, height = 'medium', children }: He
                     src={image}
                     alt={title}
                     fill
-                    className="object-cover"
+                    className="object-inherit"
                     priority
                 />
                 {/* Gradient Overlay */}
