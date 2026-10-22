@@ -138,5 +138,6 @@
   - Implemented cloud storage helper `src/lib/storage.ts` using Supabase Storage with signed URLs.
   - Migrated all 18 API routes under `src/app/api/` from synchronous SQLite queries to async Supabase queries.
   - Fixed application submission (`/api/applications/submit` and `/apply`): passed and accepted `declaration_accepted` in submit payload, and supported dual document matching (by ID or document name).
+  - Fixed admin document verification endpoint (`/api/admin/documents`): added `POST` method handler (previously only `PUT` was exported) and added `GET` handler for the admin document verification queue.
   - Added environment variable template `.env.example`.
   - Verified clean TypeScript compilation and production Next.js build.
