@@ -310,6 +310,7 @@ function ApplyFormContent() {
           ...personalInfo,
           current_step: step,
           qualifications,
+          declaration_accepted: declarationAccepted,
         }),
       });
       const data = await res.json();
@@ -384,7 +385,10 @@ function ApplyFormContent() {
       const res = await fetch('/api/applications/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ application_id: appId }),
+        body: JSON.stringify({
+          application_id: appId,
+          declaration_accepted: true,
+        }),
       });
       const data = await res.json();
       if (data.success) {

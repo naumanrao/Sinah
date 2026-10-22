@@ -37,13 +37,28 @@ export async function POST(request: NextRequest) {
     // Verify application belongs to user
     const { data: app, error: appError } = await db
       .from('applications')
-      .select('id, is_draft, status')
+      .select('id, program_id, is_draft, status')
       .eq('id', applicationId)
       .eq('user_id', session.userId)
       .maybeSingle();
 
     if (appError || !app) {
       return errorResponse('Application not found', 404);
+    }
+
+    // Infer program_document_id from document_name if not provided directly
+    let finalProgramDocId = programDocumentId;
+    if (!finalProgramDocId && documentName && app.program_id) {
+      const { data: matchedDoc } = await db
+        .from('program_documents')
+        .select('id')
+        .eq('program_id', app.program_id)
+        .ilike('document_name', documentName.trim())
+        .maybeSingle();
+
+      if (matchedDoc) {
+        finalProgramDocId = matchedDoc.id;
+      }
     }
 
     // Check file type and size
@@ -60,7 +75,7 @@ export async function POST(request: NextRequest) {
     // Generate unique filename and storage path
     const ext = file.name.split('.').pop() || 'bin';
     const storedFilename = `${uuidv4()}.${ext}`;
-    const storagePath = `applications/${applicationId}/${programDocumentId || 'general'}/${storedFilename}`;
+    const storagePath = `applications/${applicationId}/${finalProgramDocId || 'general'}/${storedFilename}`;
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -75,30 +90,33 @@ export async function POST(request: NextRequest) {
       // Ephemeral disk on Vercel is fine to ignore
     }
 
-    // 2. Remove existing document for same program_document_id if exists
-    if (programDocumentId) {
-      const { data: existingDoc } = await db
-        .from('uploaded_documents')
-        .select('id, stored_filename, storage_path')
-        .eq('application_id', applicationId)
-        .eq('program_document_id', programDocumentId)
-        .maybeSingle();
+    // 2. Remove existing document for same program_document_id or document_name if exists
+    let existingDocQuery = db
+      .from('uploaded_documents')
+      .select('id, stored_filename, storage_path')
+      .eq('application_id', applicationId);
 
-      if (existingDoc) {
-        if (existingDoc.storage_path) {
-          await deleteDocument(existingDoc.storage_path);
-        }
-        try {
-          const oldPath = path.join(UPLOAD_DIR, existingDoc.stored_filename);
-          if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-        } catch {}
+    if (finalProgramDocId) {
+      existingDocQuery = existingDocQuery.eq('program_document_id', finalProgramDocId);
+    } else {
+      existingDocQuery = existingDocQuery.eq('document_name', documentName || file.name);
+    }
 
-        await db
-          .from('uploaded_documents')
-          .delete()
-          .eq('application_id', applicationId)
-          .eq('program_document_id', programDocumentId);
+    const { data: existingDoc } = await existingDocQuery.maybeSingle();
+
+    if (existingDoc) {
+      if (existingDoc.storage_path) {
+        await deleteDocument(existingDoc.storage_path);
       }
+      try {
+        const oldPath = path.join(UPLOAD_DIR, existingDoc.stored_filename);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      } catch {}
+
+      await db
+        .from('uploaded_documents')
+        .delete()
+        .eq('id', existingDoc.id);
     }
 
     const docId = uuidv4();
@@ -107,7 +125,7 @@ export async function POST(request: NextRequest) {
     const { error: insertError } = await db.from('uploaded_documents').insert({
       id: docId,
       application_id: applicationId,
-      program_document_id: programDocumentId || null,
+      program_document_id: finalProgramDocId || null,
       document_name: documentName || file.name,
       original_filename: file.name,
       stored_filename: storedFilename,

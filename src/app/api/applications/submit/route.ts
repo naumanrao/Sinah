@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     if (!session) return errorResponse('Not authenticated', 401);
 
     const body = await request.json();
-    const { application_id } = body;
+    const { application_id, declaration_accepted } = body;
 
     if (!application_id) return errorResponse('Application ID is required');
 
@@ -29,14 +29,19 @@ export async function POST(request: NextRequest) {
     if (appError || !app) return errorResponse('Application not found', 404);
     if (!app.is_draft) return errorResponse('This application has already been submitted');
 
-    // Validate required fields
+    // Validate required personal/contact fields
     const requiredFields = ['full_name', 'father_name', 'date_of_birth', 'cnic', 'email', 'phone', 'current_address'];
     const missing = requiredFields.filter((f) => !app[f]);
     if (missing.length > 0) {
       return errorResponse(`Missing required fields: ${missing.join(', ')}`);
     }
 
-    if (!app.declaration_accepted) {
+    // Accept declaration if checked in payload or previously stored
+    const isDeclarationAccepted = declaration_accepted !== undefined
+      ? Boolean(declaration_accepted)
+      : Boolean(app.declaration_accepted);
+
+    if (!isDeclarationAccepted) {
       return errorResponse('You must accept the declaration before submitting');
     }
 
@@ -50,7 +55,7 @@ export async function POST(request: NextRequest) {
       return errorResponse('At least one academic qualification is required');
     }
 
-    // Check required documents
+    // Check required documents by program_document_id OR document_name
     const { data: requiredDocs } = await db
       .from('program_documents')
       .select('id, document_name')
@@ -59,25 +64,29 @@ export async function POST(request: NextRequest) {
 
     const { data: uploadedDocs } = await db
       .from('uploaded_documents')
-      .select('program_document_id')
+      .select('program_document_id, document_name')
       .eq('application_id', application_id);
 
-    const uploadedSet = new Set((uploadedDocs || []).map((d: any) => d.program_document_id));
+    const uploadedIdSet = new Set((uploadedDocs || []).map((d: any) => d.program_document_id).filter(Boolean));
+    const uploadedNameSet = new Set((uploadedDocs || []).map((d: any) => d.document_name?.trim().toLowerCase()).filter(Boolean));
 
     for (const doc of (requiredDocs || [])) {
-      if (!uploadedSet.has(doc.id)) {
+      const matchById = uploadedIdSet.has(doc.id);
+      const matchByName = uploadedNameSet.has(doc.document_name?.trim().toLowerCase());
+      if (!matchById && !matchByName) {
         return errorResponse(`Required document missing: ${doc.document_name}`);
       }
     }
 
     const now = new Date().toISOString();
 
-    // Update application
+    // Update application to submitted
     const { error: updateError } = await db
       .from('applications')
       .update({
         is_draft: false,
         status: 'submitted',
+        declaration_accepted: true,
         submitted_at: now,
         updated_at: now,
       })
