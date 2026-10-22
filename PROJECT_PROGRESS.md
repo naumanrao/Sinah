@@ -89,25 +89,26 @@
 
 ---
 
-## Not Started
-1. **Production Supabase Project Provisioning**:
-   - Create Supabase project in the Supabase dashboard.
-   - Run `supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor.
-   - Create private storage bucket named `admission-documents`.
-   - Add environment variables to Vercel deployment settings:
+## Not Started / Next Operational Steps
+1. **Supabase Storage Bucket Setup**:
+   - In Supabase Dashboard -> **Storage** -> Click **New Bucket**.
+   - Name: `admission-documents`.
+   - Toggle **Public bucket** to **OFF** (Private).
+2. **Environment Variables Deployment**:
+   - Create local `.env.local` for development.
+   - Add variables to Vercel Project Settings -> Environment Variables:
      - `NEXT_PUBLIC_SUPABASE_URL`
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
      - `SUPABASE_SERVICE_ROLE_KEY`
      - `JWT_SECRET`
      - `SUPABASE_STORAGE_BUCKET=admission-documents`
-2. **Automated End-to-End Test Suite**:
-   - Optional Playwright or Cypress suite for multi-step application form validation.
 
 ---
 
 ## Current Resume Point
-* All code changes, API routes, database models, and cloud storage utilities have been migrated and compiled.
-* **Next action:** Deploy to Vercel or configure the production Supabase instance credentials in `.env.local` / Vercel dashboard.
+* Schema migration (`001_initial_schema.sql`) executed successfully in Supabase (18 tables, indexes, and seed records active).
+* Codebase build and TypeScript checks are passing with 0 errors.
+* **Next action:** Create the private storage bucket `admission-documents` in Supabase and set the environment variables.
 
 ---
 
@@ -130,9 +131,10 @@
 ---
 
 ## Change Log
-* **2026-10-21:**
+* **2026-10-21 / 2026-10-22:**
   - Migrated database persistence from SQLite (`better-sqlite3`) to Supabase (`@supabase/supabase-js`).
   - Created PostgreSQL migration `supabase/migrations/001_initial_schema.sql` covering all 18 tables and default data.
+  - Fixed PostgreSQL type cast in `001_initial_schema.sql` for `start_date` and `end_date` expressions (`(...)::date`).
   - Implemented cloud storage helper `src/lib/storage.ts` using Supabase Storage with signed URLs.
   - Migrated all 18 API routes under `src/app/api/` from synchronous SQLite queries to async Supabase queries.
   - Added environment variable template `.env.example`.

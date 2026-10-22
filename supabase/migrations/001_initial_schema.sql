@@ -433,8 +433,8 @@ INSERT INTO admission_sessions (id, title, academic_year, start_date, end_date, 
   ('session-fall-2025',
    'Fall ' || EXTRACT(YEAR FROM CURRENT_DATE)::text || ' / Spring ' || (EXTRACT(YEAR FROM CURRENT_DATE) + 1)::text || ' Admissions',
    EXTRACT(YEAR FROM CURRENT_DATE)::text || '-' || (EXTRACT(YEAR FROM CURRENT_DATE) + 1)::text,
-   EXTRACT(YEAR FROM CURRENT_DATE)::text || '-01-01',
-   (EXTRACT(YEAR FROM CURRENT_DATE) + 1)::text || '-12-31',
+   (EXTRACT(YEAR FROM CURRENT_DATE)::text || '-01-01')::date,
+   ((EXTRACT(YEAR FROM CURRENT_DATE) + 1)::text || '-12-31')::date,
    'open',
    'Official online admissions open for BSN, Post-RN, LHV, CMW, and Allied Health programs at SINAH Institute.')
 ON CONFLICT (id) DO NOTHING;
