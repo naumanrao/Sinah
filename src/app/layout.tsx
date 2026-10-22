@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CityProvider } from "@/context/CityContext";
+import { AuthProvider } from "@/context/AuthContext";
 // import { CitySelectionModal } from "@/components/CitySelectionModal";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,14 +26,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased selection:bg-secondary/30`}>
-        <CityProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          {/* <CitySelectionModal /> */}
-        </CityProvider>
+        <AuthProvider>
+          <CityProvider>
+            <Navbar />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            {/* <CitySelectionModal /> */}
+          </CityProvider>
+        </AuthProvider>
       </body>
     </html>
   );
